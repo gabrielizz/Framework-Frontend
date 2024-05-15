@@ -1,0 +1,77 @@
+/*
+* Curso de Engenharia de Software - UniEVANGÉLICA 
+* Disciplina de Programação Web 
+* Dev: [Gabriel G. Mesquita] 
+* DATA:12/05
+*/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueJS To-Do List</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+        .completed {
+            text-decoration: line-through;
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Input para adicionar uma nova tarefa -->
+        <input v-model="newTask" placeholder="Adicionar nova tarefa">
+        <!-- Botão para adicionar a nova tarefa à lista -->
+        <button @click="addTask">Adicionar</button>
+
+        <!-- Lista de tarefas -->
+        <ul>
+            <li v-for="(task, index) in tasks" :key="index">
+                <!-- Exibe o nome da tarefa, aplicando a classe 'completed' se a tarefa estiver concluída -->
+                <span :class="{ completed: task.completed }">{{ task.name }}</span>
+                <!-- Botão para marcar a tarefa como concluída -->
+                <button @click="toggleCompletion(index)">Concluída</button>
+                <!-- Botão para remover a tarefa da lista -->
+                <button @click="removeTask(index)">Remover</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // Inicializa a instância Vue
+        new Vue({
+            el: '#app',
+            data: {
+                // Armazena o valor do input para nova tarefa
+                newTask: '',
+                // Lista de tarefas
+                tasks: []
+            },
+            methods: {
+                // Adiciona uma nova tarefa à lista
+                addTask() {
+                    // Verifica se o input não está vazio
+                    if (this.newTask.trim() !== '') {
+                        // Adiciona a nova tarefa à lista com o estado 'não concluída'
+                        this.tasks.push({ name: this.newTask, completed: false });
+                        // Limpa o input
+                        this.newTask = '';
+                    }
+                },
+                // Alterna o estado de conclusão da tarefa
+                toggleCompletion(index) {
+                    // Inverte o estado de 'completed' da tarefa
+                    this.tasks[index].completed = !this.tasks[index].completed;
+                },
+                // Remove uma tarefa da lista
+                removeTask(index) {
+                    // Remove a tarefa da lista com base no índice fornecido
+                    this.tasks.splice(index, 1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
